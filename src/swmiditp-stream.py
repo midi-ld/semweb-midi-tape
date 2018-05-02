@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# mido-rdf-stream.py: stream and save MIDI RDF triples
+# swmiditp-stream.py: Stream MIDI RDF triples
 
 import mido
 import uuid
@@ -9,13 +9,32 @@ from datetime import datetime
 import time
 import sys
 
-if len(sys.argv) < 2:
-    print """\
-Usage: mido-rdf-stream.py <midi input device>
-Use mido-inputs.py to get a list of avaialbe input device names"""
+# if len(sys.argv) < 2:
+#     print """\
+# Usage: swmiditp-stream.py <midi input device>"""
+#     exit(1)
+
+midi_inputs = mido.get_input_names()
+sys.stderr.write("swmiditp-stream.py: Stream MIDI RDF triples\n")
+sys.stderr.write("Instructions:\n")
+sys.stderr.write("1. Type you MIDI input device from the list below and press enter\n")
+sys.stderr.write("2. Play your MIDI instrument along\n")
+sys.stderr.write("3. When done, press Ctrl-C and you'll get a MIDI pattern identifier\n")
+sys.stderr.write("You can redirect the output to a .nt file, e.g. ./swmiditp-stream.py > myplay.nt\n")
+sys.stderr.write("\n")
+sys.stderr.write("Detected MIDI input devices:\n")
+for i in range(len(midi_inputs)):
+    sys.stderr.write("[{}] {}".format(i, midi_inputs[i]))
+    sys.stderr.write('\n')
+
+try:
+    mode = int(raw_input())
+except ValueError:
+    print "Not a number"
     exit(1)
 
-midi_input_device = sys.argv[1]
+# midi_input_device = sys.argv[1]
+midi_input_device = midi_inputs[mode]
 
 # initialize rdf graph
 g = Graph()
@@ -153,7 +172,7 @@ except KeyboardInterrupt:
 
     g = g + eg
 
-    sys.stderr.write(piece)
+    sys.stderr.write("MIDI pattern identifier: {}".format(piece))
     sys.stderr.write('\n')
 
     exit(0)
