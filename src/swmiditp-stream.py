@@ -42,10 +42,12 @@ g = Graph()
 midi_r = Namespace("http://purl.org/midi-ld/")
 midi = Namespace("http://purl.org/midi-ld/midi#")
 prov = Namespace("http://www.w3.org/ns/prov#")
+mo = Namespace("http://purl.org/ontology/mo/")
 
 g.bind('midi-r', midi_r)
 g.bind('midi', midi)
 g.bind('prov', prov)
+g.bind('mo', mo)
 
 # Initialize pattern, track and event IDs
 pattern_id = uuid.uuid4()
@@ -172,8 +174,43 @@ except KeyboardInterrupt:
 
     g = g + eg
 
-    sys.stderr.write("MIDI pattern identifier: {}".format(piece))
-    sys.stderr.write('\n')
+    # Add metadata
+    m = Graph()
+
+    performance_uri = piece # The MIDI URI
+    musical_work_uri = None # The URI of which this MIDI is a performance of
+    composition_uri = None # The URI of the composition from which the work was produced
+    composer_uri = None # The URI of the original artist who composed the work
+    performer_uri = None # THe URI of the music artist that did the performance
+
+
+    sys.stderr.write("Metadata info\n")
+    sys.stderr.write("The URI of your performance is:\n")
+    sys.stderr.write(URIRef(performance_uri))
+    sys.stderr.write("\n")
+    sys.stderr.write("What is the URI of the musical work of which this MIDI is a performance of? (e.g. http://dbpedia.org/resource/Hey_Jude)\n")
+    musical_work_uri = URIRef(raw_input())
+    sys.stderr.write("What is the URI of the composition from which the musical work was produced? (e.g. http://dbpedia.org/resource/Hey_Jude)\n")
+    composition_uri = URIRef(raw_input())
+    sys.stderr.write("What is the URI of the composer of the work? (e.g. http://dbpedia.org/resource/The_Beatles)\n")
+    composer_uri = URIRef(raw_input())
+    sys.stderr.write("What is the URI that identifies you as the artist that performed the work? (e.g. http://example.org/foaf.rdf)\n")
+    performer_uri = URIRef(raw_input())
+    sys.stderr.write("\n")
+
+    m.add((piece, RDF.type, mo.Performance))
+    m.add((piece, mo.performance_of, musical_work_uri))
+    m.add((musical_work_uri, RDF.type, mo.MusicalWork))
+    m.add((composition_uri, RDF.type, mo.Composition))
+    m.add((composition_uri, mo.produced_work, musical_work_uri))
+    m.add((composition_uri, mo.composer, composer_uri))
+    m.add((composer_uri, RDF.type, mo.MusicArtist))
+    m.add((piece, mo.performer, performer_uri))
+    m.add((performer_uri, RDF.type, mo.MusicArtist))
+
+    print m.serialize(format='nt')
+
+    g = g + m
 
     exit(0)
 
