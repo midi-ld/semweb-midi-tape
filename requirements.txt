@@ -1,6 +1,8 @@
 isodate==0.6.0
 mido==1.2.8
 pyparsing==2.2.0
+python-midi==0.2.4
 python-rtmidi==1.1.0
 rdflib==4.2.2
 six==1.11.0
+Unidecode==1.0.22
