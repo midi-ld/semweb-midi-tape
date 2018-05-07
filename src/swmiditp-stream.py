@@ -188,7 +188,7 @@ except KeyboardInterrupt:
     sys.stderr.write("The URI of your performance is:\n")
     sys.stderr.write(URIRef(performance_uri))
     sys.stderr.write("\n")
-    sys.stderr.write("What is the URI of the musical work of which this MIDI is a performance of? (e.g. http://dbpedia.org/resource/Hey_Jude)\n")
+    sys.stderr.write("What is the URI of the musical work of which this MIDI is a performance of? (e.g. https://musicbrainz.org/work/eac0d507-46ed-3ed7-80d5-e4ac31719221)\n")
     musical_work_uri = URIRef(raw_input())
     sys.stderr.write("What is the URI of the composition from which the musical work was produced? (e.g. http://dbpedia.org/resource/Hey_Jude)\n")
     composition_uri = URIRef(raw_input())
