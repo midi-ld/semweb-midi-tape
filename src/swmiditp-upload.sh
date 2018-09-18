@@ -9,5 +9,5 @@ if [ $# -lt 3 ]
 fi
 
 # curl -s -o /dev/null -X POST -H'Content-Type: application/sparql-update' -d"INSERT DATA { GRAPH <http://virtuoso-midi.amp.ops.labs.vu.nl/none> { $(cat $1) } }" $2
-curl -s  -o /dev/null -X POST http://grlc.io/api/midi-ld/queries/insert_pattern -d"g=<$1>" -d"data=$(cat $2)"
-curl -s -X GET -G http://tapeapi.amp.ops.labs.vu.nl/ --data-urlencode "perf_uri=$3"
+curl -s -o /dev/null -X POST http://grlc.io/api/midi-ld/queries/insert_pattern -d"g=<$1>" -d"data=$(cat $2)" 
+curl -s -X GET -G http://tapeapi.amp.ops.labs.vu.nl/ --data-urlencode "perf_uri=$3" ;
