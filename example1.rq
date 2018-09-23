@@ -1,0 +1,9 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX mid: <http://purl.org/midi-ld/midi#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX dbpedia: <http://dbpedia.org/resource/>
+SELECT (count(?pattern) as ?c) ?genre
+WHERE {
+  ?pattern dct:subject ?genre .
+  ?genre a dbpedia:MusicGenre
+} GROUP BY ?genre ORDER BY DESC(?c)
