@@ -1,0 +1,11 @@
+PREFIX midi: <http://purl.org/midi-ld/midi#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX dbr: <http://dbpedia.org/resource/>
+SELECT ?pattern WHERE {
+  ?pattern a midi:Pattern .
+  ?pattern dc:subject dbr:Romeo_and_Juliet .
+  ?pattern midi:hasTrack ?track .
+  ?track midi:hasEvent ?event .
+  ?event midi:numerator 4 .
+  ?event midi:denominator 4 .
+}
